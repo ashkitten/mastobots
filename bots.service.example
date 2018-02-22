@@ -1,0 +1,12 @@
+[Unit]
+Description=Mastodon bots
+
+[Service]
+Environment=PYTHONUNBUFFERED=1
+Environment=NIX_REMOTE=daemon
+Environment=NIX_BUILD_SHELL=/run/current-system/sw/bin/bash
+WorkingDirectory=/path/to/mastobots
+ExecStart=/run/current-system/sw/bin/nix-shell deps.nix --run "ananas bots.cfg"
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,18 @@
+[DEFAULT]
+admin = foo@example.social
+
+[quick]
+class = quickbot.QuickBot
+domain = example.social
+client_id = <client id>
+client_secret = <client secret>
+access_token = <access token>
+
+[botkitten]
+class = ebooks.EbooksBot
+domain = example.social
+client_id = <client id>
+client_secret = <client secret>
+access_token = <access token>
+exclude_replies = True
+
