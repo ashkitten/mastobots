@@ -1,9 +1,10 @@
-from ananas import PineappleBot, interval, reply
+from ananas import interval, reply
+from bot import Bot
 from datetime import datetime
 import random
 
 
-class QuickBot(PineappleBot):
+class QuickBot(Bot):
     def start(self):
         with open("words/nouns.txt", "r") as f:
             self.nouns = [line.rstrip("\n") for line in f]

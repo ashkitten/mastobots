@@ -32,8 +32,8 @@ with import <nixpkgs> {};
       propagatedBuildInputs = with python36Packages; [ requests more-itertools mastodonpy ];
 
       meta = {
-        homepage = "https://github.com/chronister/ananas";
         description = " The Python Bot Framework for Mastodon";
+        homepage = "https://github.com/chronister/ananas";
       };
     };
 
@@ -50,8 +50,8 @@ with import <nixpkgs> {};
       propagatedBuildInputs = with python36Packages; [ unidecode ];
 
       meta = {
-        homepage = "https://github.com/chronister/ananas";
         description = " The Python Bot Framework for Mastodon";
+        homepage = "https://github.com/chronister/ananas";
       };
     };
 
