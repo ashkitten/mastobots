@@ -1,4 +1,4 @@
-from ananas import interval, reply
+from ananas import html_strip_tags, interval, reply
 from bot import Bot
 from datetime import datetime
 import random

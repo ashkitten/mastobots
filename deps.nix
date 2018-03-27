@@ -21,15 +21,15 @@ with import <nixpkgs> {};
 
     ananas = python36.pkgs.buildPythonPackage rec {
       pname = "ananas";
-      version = "1.0.0b5";
+      version = "1.0.0b9";
 
       src = python36.pkgs.fetchPypi {
         inherit pname version;
-        sha256 = "45131c5ecb268a73d83e934c5dfea44f33571ce4b28c6d6df7ea32c407d210df";
+        sha256 = "430149fcda7ee2cb156de9c3d10977fd6523ffbab6f6d16003f0b73c35b1bb61";
       };
 
       doCheck = false;
-      propagatedBuildInputs = with python36Packages; [ requests more-itertools mastodonpy ];
+      propagatedBuildInputs = with python36Packages; [ requests more-itertools mastodonpy configobj ];
 
       meta = {
         description = " The Python Bot Framework for Mastodon";
