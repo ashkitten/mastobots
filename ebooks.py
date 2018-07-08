@@ -116,14 +116,14 @@ class EbooksBot(Bot):
     @hourly(minute=23)
     def toot(self):
         msg = self.model.make_short_sentence(500, tries=100)
-        self.mastodon.toot(msg)
+        self.mastodon.status_post(msg, spoiler_text="markov 🤖", visibility="unlisted")
         self.log("toot", "Tooted: {}".format(msg))
 
     def reply_toot(self, mention, user, response):
         if (user.id in self.recent_replies and
                 not user.acct == self.config.admin and
                 self.recent_replies[user.id] < self.max_replies):
-            self.log("reply_toot", "I've talked to them too much recently")
+            self.log("reply_toot", "I've talked to you too much recently")
             return
 
         self.log("reply", "Responding with \"{}\", visibility: {}".format(
@@ -132,7 +132,8 @@ class EbooksBot(Bot):
         self.mastodon.status_post(
             response,
             in_reply_to_id=mention.id,
-            visibility=mention.visibility)
+            visibility=mention.visibility,
+            spoiler_text="markov 🤖")
 
         try:
             self.recent_replies[user.id] += 1

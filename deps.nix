@@ -1,59 +1,87 @@
 with import <nixpkgs> {};
 
-( let
-    mastodonpy = python36.pkgs.buildPythonPackage rec {
-      pname = "Mastodon.py";
-      version = "1.2.2";
+let
+  http-ece = python36.pkgs.buildPythonPackage rec {
+    pname = "http-ece";
+    version = "1.0.5";
 
-      src = python36.pkgs.fetchPypi {
-        inherit pname version;
-        sha256 = "ca3db745a07d74c985cdeeee7c3937bf8b389aef69b89d66c7ddcfed8ffbffeb";
-      };
-
-      doCheck = false;
-      propagatedBuildInputs = with python36Packages; [ decorator pytz six dateutil requests ];
-
-      meta = {
-        homepage = "https://github.com/halcy/Mastodon.py";
-        description = "Python wrapper for the Mastodon API";
-      };
+    src = python36.pkgs.fetchPypi {
+      pname = "http_ece";
+      inherit version;
+      sha256 = "2f31a0640c31a0c2934ab1e37005dd9a559ae854a16304f9b839e062074106cc";
     };
 
-    ananas = python36.pkgs.buildPythonPackage rec {
-      pname = "ananas";
-      version = "1.0.0b9";
+    doCheck = false;
+    propagatedBuildInputs = with python36Packages; [ cryptography ];
 
-      src = python36.pkgs.fetchPypi {
-        inherit pname version;
-        sha256 = "430149fcda7ee2cb156de9c3d10977fd6523ffbab6f6d16003f0b73c35b1bb61";
-      };
+    meta = {
+      description = "A simple implementation of the encrypted content-encoding";
+      homepage = "https://github.com/web-push-libs/encrypted-content-encoding";
+    };
+  };
 
-      doCheck = false;
-      propagatedBuildInputs = with python36Packages; [ requests more-itertools mastodonpy configobj ];
+  mastodonpy = python36.pkgs.buildPythonPackage rec {
+    pname = "Mastodon.py";
+    version = "1.3.0";
 
-      meta = {
-        description = " The Python Bot Framework for Mastodon";
-        homepage = "https://github.com/chronister/ananas";
-      };
+    src = python36.pkgs.fetchPypi {
+      inherit pname version;
+      sha256 = "339a60c4ea505dd5b6c8f6ac076ce40f9e7bdfcd72d9466869da8bf631e4b9f5";
     };
 
-    markovify = python36.pkgs.buildPythonPackage rec {
-      pname = "markovify";
-      version = "0.7.1";
+    doCheck = false;
+    propagatedBuildInputs = with python36Packages; [ decorator pytz six dateutil requests http-ece ];
 
-      src = python36.pkgs.fetchPypi {
-        inherit pname version;
-        sha256 = "f016ef58f60a8afb925aa16803538561c4b00375bf0b7f84952c29993805b9a7";
-      };
+    meta = {
+      description = "Python wrapper for the Mastodon API";
+      homepage = "https://github.com/halcy/Mastodon.py";
+    };
+  };
 
-      doCheck = false;
-      propagatedBuildInputs = with python36Packages; [ unidecode ];
+  ananas = python36.pkgs.buildPythonPackage rec {
+    pname = "ananas";
+    version = "master";
 
-      meta = {
-        description = " The Python Bot Framework for Mastodon";
-        homepage = "https://github.com/chronister/ananas";
-      };
+    src = fetchFromGitHub {
+      owner = "chr-1x";
+      repo = "ananas";
+      rev = "6100d97368c2053a0517ee80bff55eee2fdfa314";
+      sha256 = "10lxlmd7k1vjh5p01w5ddl872cc6bc4mkd8qq80rihqv1l5dyzcx";
     };
 
-  in python36.withPackages (ps: [ ananas markovify ])
-).env
+    doCheck = false;
+    propagatedBuildInputs = with python36Packages; [ requests more-itertools mastodonpy configobj ];
+
+    meta = {
+      description = " The Python Bot Framework for Mastodon";
+      homepage = "https://github.com/chronister/ananas";
+    };
+  };
+
+  markovify = python36.pkgs.buildPythonPackage rec {
+    pname = "markovify";
+    version = "0.7.1";
+
+    src = python36.pkgs.fetchPypi {
+      inherit pname version;
+      sha256 = "f016ef58f60a8afb925aa16803538561c4b00375bf0b7f84952c29993805b9a7";
+    };
+
+    doCheck = false;
+    propagatedBuildInputs = with python36Packages; [ unidecode ];
+
+    meta = {
+      description = " The Python Bot Framework for Mastodon";
+      homepage = "https://github.com/chronister/ananas";
+    };
+  };
+
+in stdenv.mkDerivation {
+  name = "env";
+  buildInputs = [
+    ananas
+    markovify
+    espeak
+    ffmpeg
+  ];
+}
