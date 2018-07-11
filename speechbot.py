@@ -12,6 +12,9 @@ class SpeechBot(Bot):
     @reply
     def on_reply(self, mention, user):
         msg = html_strip_tags(mention.content, linebreaks=True)
+        msg = remove_prefix(msg.strip(), "@tts").strip()
+        msg = msg.replace("@", "@\u200b")
+
         self.log("on_reply", "Received toot from {}: \"{}\"".format(user.acct, msg))
 
         if "!delete" in msg and user.acct == self.config.admin:
@@ -22,7 +25,7 @@ class SpeechBot(Bot):
         with tempfile.NamedTemporaryFile(suffix=".wav") as af:
             subprocess.check_call([
                 "espeak",
-                remove_prefix(msg.strip(), "@tts"),
+                msg,
                 "-w", af.name,
             ])
 
@@ -43,4 +46,9 @@ class SpeechBot(Bot):
                 self.log("on_reply", "Generated video, posting...")
 
                 media = self.mastodon.media_post(vf.name)
-                self.mastodon.status_post("@{}".format(user.acct), in_reply_to_id=mention, visibility=mention.visibility, media_ids=media)
+                self.mastodon.status_post(
+                    "@{} {}".format(user.acct, msg),
+                    in_reply_to_id=mention,
+                    visibility=mention.visibility,
+                    media_ids=media
+                )
